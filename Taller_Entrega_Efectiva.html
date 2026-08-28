@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller Entrega Efectiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink: #1B2430;
+    --ink-soft: #4B5563;
+    --paper: #EEF0EA;
+    --panel: #FFFFFF;
+    --line: #CDD2C2;
+    --accent: #B5661C;
+    --accent-soft: #E8CBA8;
+    --good: #2F6E5C;
+    --good-soft: #D9E8E1;
+    --bad: #A33D3F;
+    --bad-soft: #F0DBD9;
+    --code-bg: #1B2430;
+    --code-ink: #EAE7DC;
+    --code-accent: #E0A458;
+    --code-string: #9FC5A8;
+    --shadow: 0 1px 2px rgba(27,36,48,0.06), 0 6px 16px rgba(27,36,48,0.05);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink: #E7E9E1;
+      --ink-soft: #A8AEA0;
+      --paper: #12161A;
+      --panel: #1A2027;
+      --line: #303842;
+      --accent: #E0A458;
+      --accent-soft: #4A3A24;
+      --good: #6FB79B;
+      --good-soft: #223A32;
+      --bad: #D2807F;
+      --bad-soft: #3B2222;
+      --code-bg: #0D1013;
+      --code-ink: #E7E9E1;
+      --code-accent: #E0A458;
+      --code-string: #9FC5A8;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+    }
+  }
+
+  :root[data-theme="dark"]{
+    --ink: #E7E9E1;
+    --ink-soft: #A8AEA0;
+    --paper: #12161A;
+    --panel: #1A2027;
+    --line: #303842;
+    --accent: #E0A458;
+    --accent-soft: #4A3A24;
+    --good: #6FB79B;
+    --good-soft: #223A32;
+    --bad: #D2807F;
+    --bad-soft: #3B2222;
+    --code-bg: #0D1013;
+    --code-ink: #E7E9E1;
+    --code-accent: #E0A458;
+    --code-string: #9FC5A8;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce){ *{ animation: none !important; transition: none !important; } }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .page{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 28px 96px;
+  }
+
+  h1,h2,h3{
+    font-family: "Zilla Slab", Georgia, "Times New Roman", serif;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  a{ color: var(--accent); }
+  :focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- header ---------- */
+  header.masthead{
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  .eyebrow{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  h1.title{
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    font-weight: 700;
+    margin-top: 10px;
+    letter-spacing: -0.01em;
+  }
+  .subtitle{
+    margin-top: 10px;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+  }
+  .chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .chip{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: var(--ink);
+    background: var(--panel);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip .dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display:inline-block; }
+
+  /* ---------- sections ---------- */
+  section{ margin-top: 52px; }
+  .section-head{
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+  }
+  .section-num{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  h2.section-title{ font-size: 1.5rem; font-weight: 600; }
+  .lede{ color: var(--ink-soft); max-width: 68ch; margin-bottom: 22px; }
+
+  .callout{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+    font-size: 0.96rem;
+  }
+  .callout strong{ color: var(--ink); }
+  .callout code{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    background: var(--accent-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  /* ---------- sheet cards ---------- */
+  .sheet-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+  }
+  .sheet-card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 18px 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sheet-tag{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .sheet-name{
+    font-family: "Zilla Slab", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.12rem;
+  }
+  .sheet-rows{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .sheet-desc{ font-size: 0.91rem; color: var(--ink-soft); }
+  .sheet-key{ font-size: 0.86rem; margin-top: auto; padding-top: 8px; border-top: 1px dashed var(--line); }
+  .sheet-key b{ font-family: "IBM Plex Mono", ui-monospace, monospace; font-weight: 600; font-size: 0.86rem; }
+
+  /* ---------- diagram ---------- */
+  figure.diagram{ margin: 0; }
+  figure.diagram svg{ width: 100%; height: auto; display: block; }
+  figure.diagram figcaption{
+    margin-top: 12px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    max-width: 66ch;
+  }
+  .diagram-wrap{
+    overflow-x: auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- methodology timeline ---------- */
+  .runbook{ display: flex; flex-direction: column; gap: 0; }
+  .step{
+    display: grid;
+    grid-template-columns: 64px 44px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+  .step:last-child{ border-bottom: 1px solid var(--line); }
+  .step-time{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding-top: 3px;
+  }
+  .step-letter{
+    font-family: "Zilla Slab", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .step-title{ font-weight: 600; font-size: 1.02rem; margin-bottom: 4px; }
+  .step-body{ color: var(--ink-soft); font-size: 0.93rem; max-width: 64ch; }
+  .prompt{
+    margin-top: 10px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 6px;
+    padding: 10px 14px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+  .prompt::before{
+    content: "› prompt sugerido";
+    display: block;
+    color: var(--code-accent);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ---------- code block ---------- */
+  .code-panel{
+    background: var(--code-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .code-panel .code-head{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(234,231,220,0.12);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--code-accent);
+  }
+  .code-panel .code-head .traffic{ width: 9px; height: 9px; border-radius: 50%; background: rgba(234,231,220,0.25); display:inline-block; }
+  .code-panel pre{
+    margin: 0;
+    padding: 18px 20px 22px;
+    overflow-x: auto;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.8px;
+    line-height: 1.6;
+    color: var(--code-ink);
+  }
+  .tok-kw{ color: var(--code-accent); }
+  .tok-str{ color: var(--code-string); }
+  .tok-com{ color: var(--ink-soft); font-style: italic; }
+
+  /* ---------- deliverable checklist ---------- */
+  .deliverable{
+    background: var(--good-soft);
+    border: 1px solid var(--good);
+    border-radius: 8px;
+    padding: 18px 22px;
+  }
+  .deliverable h3{ font-size: 1.05rem; margin-bottom: 10px; color: var(--good); font-family: "IBM Plex Sans", sans-serif; font-weight: 700; letter-spacing: -0.01em; }
+  .deliverable ul{ margin: 0; padding-left: 20px; }
+  .deliverable li{ margin-bottom: 6px; }
+  .deliverable li::marker{ color: var(--good); }
+
+  footer{
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 560px){
+    .step{ grid-template-columns: 1fr; gap: 4px; }
+    .step-time, .step-letter{ padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Nuevo Curso de IA · Semana 03 · Sesión práctica de 60 minutos</div>
+    <h1 class="title">Taller de Entrega Efectiva</h1>
+    <p class="subtitle">Trabajamos con data real de una operación de reparto (5 hojas, ~250,000 filas en total) usando VS&nbsp;Code y Claude&nbsp;Code para auditar, cruzar y calcular el KPI que le dice a la cadena de suministro si está cumpliendo su promesa de entrega.</p>
+    <div class="chips">
+      <span class="chip"><span class="dot"></span>60 minutos</span>
+      <span class="chip"><span class="dot"></span>VS Code + Claude Code</span>
+      <span class="chip"><span class="dot"></span>Python · pandas · Streamlit</span>
+      <span class="chip"><span class="dot"></span>Archivo: In Puts EE (CENTRUM) Final S1.xlsx</span>
+    </div>
+  </header>
+
+  <section id="setup">
+    <div class="callout">
+      <strong>Antes de empezar:</strong> abran la carpeta <code>semana 03</code> en VS Code y lancen Claude Code en esa carpeta. Verifiquen que tengan <code>pandas</code>, <code>openpyxl</code> y <code>streamlit</code> instalados — si falta algo, pídanselo a Claude Code directamente: no van a escribir el pipeline a mano desde cero, van a dirigirlo.
+    </div>
+  </section>
+
+  <section id="hojas">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Las 5 hojas del archivo</h2>
+    </div>
+    <p class="lede">Cada hoja representa un momento distinto del mismo pedido: dónde vive el cliente, cuándo debía llegar, y qué pasó cuando el repartidor tocó la puerta. Antes de calcular nada, entiendan qué es "una fila" en cada una.</p>
+
+    <div class="sheet-grid">
+      <div class="sheet-card">
+        <span class="sheet-tag">Maestro geográfico</span>
+        <span class="sheet-name">IDZones</span>
+        <span class="sheet-rows">~16,700 filas</span>
+        <p class="sheet-desc">Un código postal por fila: departamento, provincia, distrito, región, zona, centro de distribución (CD) asignado y frecuencia de reparto.</p>
+        <div class="sheet-key"><b>Llave:</b> Cod Postal</div>
+      </div>
+
+      <div class="sheet-card">
+        <span class="sheet-tag">Calendario</span>
+        <span class="sheet-name">Calendario Y</span>
+        <span class="sheet-rows">365 filas</span>
+        <p class="sheet-desc">Un día del año por fila, traducido a semana comercial (S1, S2…) y campaña (C01, C02…). Es el diccionario que conecta fechas con el lenguaje del negocio.</p>
+        <div class="sheet-key"><b>Llave:</b> Key Fecha</div>
+      </div>
+
+      <div class="sheet-card">
+        <span class="sheet-tag">Plazos de entrega</span>
+        <span class="sheet-name">LT C07-Ácido</span>
+        <span class="sheet-rows">~9,800 filas</span>
+        <p class="sheet-desc">Un código postal por fila, con el lead time (días de plazo) en una columna por cada fecha de pedido entre el 20/jun y el 17/jul 2026.</p>
+        <div class="sheet-key"><b>Llave:</b> Codigo Postal + fecha</div>
+      </div>
+
+      <div class="sheet-card">
+        <span class="sheet-tag">El pedido</span>
+        <span class="sheet-name">Seg Ped C07-26</span>
+        <span class="sheet-rows">~27,000 filas</span>
+        <p class="sheet-desc">Un pedido por fila: quién lo hizo, cuándo, y a qué ZIP debía llegar. Es el punto de partida de todo el cálculo.</p>
+        <div class="sheet-key"><b>Llave:</b> NroOrden</div>
+      </div>
+
+      <div class="sheet-card">
+        <span class="sheet-tag">Lo que pasó en la puerta</span>
+        <span class="sheet-name">Preliquidación</span>
+        <span class="sheet-rows">~177,000 filas</span>
+        <p class="sheet-desc">Un intento de entrega por fila (puede haber varios por pedido): estado de la orden, motivo y hora de entrega registrados por la flota.</p>
+        <div class="sheet-key"><b>Llave:</b> Código de Orden (no es única)</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kpi">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">El KPI: Entrega Efectiva</h2>
+    </div>
+    <p class="lede"><strong>Entrega Efectiva (EE)</strong> mide qué porcentaje de los pedidos llegó aprobado, con un motivo válido de recepción, dentro del plazo prometido (fecha de pedido + lead time del código postal). No es solo "¿llegó?" — es "¿llegó bien, y llegó a tiempo?".</p>
+    <p class="lede">Para una cadena de suministro este número importa porque es el único indicador que atraviesa las tres capas del negocio a la vez: la <em>promesa</em> (el lead time pactado por zona), la <em>ejecución</em> (lo que realmente hizo la flota) y la <em>experiencia</em> del cliente final. Una EE baja no es un problema de un solo eslabón — puede ser mala cobertura de zonas, plazos mal calculados, o fallas operativas en el último tramo. El resto de la sesión es, literalmente, encontrar en cuál.</p>
+    <p class="lede">En la operación real de la que sale esta data, calcular este KPI a mano toma entre 3 y 4 horas efectivas de un analista — y hasta 8 si nadie está dedicado por completo al tema. Cuando el número se mueve y hay que averiguar por qué, bajar al detalle por región, zona o repartidor suele tardar aún más, porque ese nivel de detalle casi nunca existe ya armado en un dashboard. Eso es exactamente lo que ustedes van a comprimir a una hora con Claude Code.</p>
+
+    <div class="diagram-wrap">
+      <figure class="diagram">
+        <svg viewBox="0 0 900 400" role="img" aria-label="Diagrama de flujo: un pedido pasa por el Gateway 1 que valida si fue aprobado con motivo válido; si sí, el Gateway 2 compara la fecha de entrega contra la fecha máxima para decidir entrega efectiva o no efectiva; si no, el Gateway 3 compara la fecha de hoy contra la fecha máxima para decidir pendiente dentro o fuera de tiempo.">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- Pedido -->
+          <rect x="370" y="14" width="160" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="450" y="40" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor">Pedido</text>
+
+          <line x1="450" y1="56" x2="450" y2="82" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+          <!-- Gateway 1 diamond -->
+          <polygon points="450,80 575,122 450,164 325,122" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="450" y="117" text-anchor="middle" font-size="11.5" fill="currentColor">¿Aprobado +</text>
+          <text x="450" y="131" text-anchor="middle" font-size="11.5" fill="currentColor">motivo válido?</text>
+
+          <!-- branch left (Si) to Gateway 2 -->
+          <line x1="380" y1="150" x2="215" y2="215" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="270" y="178" text-anchor="middle" font-size="11.5" fill="currentColor">Sí</text>
+
+          <!-- branch right (No) to Gateway 3 -->
+          <line x1="520" y1="150" x2="685" y2="215" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="630" y="178" text-anchor="middle" font-size="11.5" fill="currentColor">No</text>
+
+          <!-- Gateway 2 diamond -->
+          <polygon points="200,213 300,248 200,283 100,248" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="200" y="243" text-anchor="middle" font-size="10.5" fill="currentColor">¿Entrega ≤</text>
+          <text x="200" y="256" text-anchor="middle" font-size="10.5" fill="currentColor">fecha máx.?</text>
+
+          <!-- Gateway 3 diamond -->
+          <polygon points="700,213 800,248 700,283 600,248" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="700" y="243" text-anchor="middle" font-size="10.5" fill="currentColor">¿Hoy ≤</text>
+          <text x="700" y="256" text-anchor="middle" font-size="10.5" fill="currentColor">fecha máx.?</text>
+
+          <!-- Gateway2 -> Efectiva (Si) -->
+          <line x1="165" y1="272" x2="110" y2="322" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="108" y="302" text-anchor="middle" font-size="11" fill="currentColor">Sí</text>
+          <!-- Gateway2 -> No efectiva (No) -->
+          <line x1="235" y1="272" x2="290" y2="322" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="292" y="302" text-anchor="middle" font-size="11" fill="currentColor">No</text>
+
+          <!-- Gateway3 -> Pendiente en tiempo (Si) -->
+          <line x1="665" y1="272" x2="612" y2="322" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="608" y="302" text-anchor="middle" font-size="11" fill="currentColor">Sí</text>
+          <!-- Gateway3 -> Pendiente fuera de tiempo (No) -->
+          <line x1="735" y1="272" x2="790" y2="322" stroke="currentColor" stroke-width="1.6" marker-end="url(#arrow)"/>
+          <text x="794" y="302" text-anchor="middle" font-size="11" fill="currentColor">No</text>
+
+          <!-- End boxes -->
+          <rect x="30" y="326" width="160" height="46" rx="6" fill="var(--good-soft)" stroke="var(--good)" stroke-width="1.6"/>
+          <text x="110" y="354" text-anchor="middle" font-size="12" font-weight="600" fill="var(--good)">Entrega Efectiva</text>
+
+          <rect x="210" y="326" width="160" height="46" rx="6" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="1.6"/>
+          <text x="290" y="354" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--bad)">Entrega No Efectiva</text>
+
+          <rect x="530" y="326" width="160" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <text x="610" y="348" text-anchor="middle" font-size="11" fill="currentColor">Pendiente</text>
+          <text x="610" y="362" text-anchor="middle" font-size="11" fill="currentColor">dentro de tiempo</text>
+
+          <rect x="710" y="326" width="160" height="46" rx="6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <text x="790" y="348" text-anchor="middle" font-size="11" fill="currentColor">Pendiente</text>
+          <text x="790" y="362" text-anchor="middle" font-size="11" fill="currentColor">fuera de tiempo</text>
+        </svg>
+        <figcaption>Los tres gateways del proceso de negocio. Verde = entrega efectiva, rojo = entrega no efectiva, contorno punteado = aún sin resolver. La fecha máxima de entrega siempre es <code style="font-family:'IBM Plex Mono',monospace">FechaPedido + Lead Time(ZIP, FechaPedido)</code>.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="metodologia">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Qué hacemos en la hora</h2>
+    </div>
+    <p class="lede">Siete pasos, cada uno con su propio tiempo. Claude Code escribe el código; ustedes deciden qué preguntarle y juzgan si la respuesta tiene sentido con la data real — esa es la parte que no se puede delegar.</p>
+
+    <div class="runbook">
+      <div class="step">
+        <span class="step-time">0–10 min</span>
+        <span class="step-letter">a</span>
+        <div>
+          <div class="step-title">Auditoría de consistencia</div>
+          <div class="step-body">¿El código postal significa lo mismo en las 5 hojas? ¿Todas las fechas caen dentro del rango que cubre la tabla de Lead Times? ¿Hay duplicados donde no deberían? No asuman que la data está limpia — pruébenlo.</div>
+          <div class="prompt">Lee las 5 hojas del Excel y dime, por hoja: tipo y longitud del código postal, rango de fechas, y si la columna llave tiene duplicados.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">10–20 min</span>
+        <span class="step-letter">b</span>
+        <div>
+          <div class="step-title">Cruce de información</div>
+          <div class="step-body">Unan Seg Ped con Preliquidación por número de orden, y ambas con IDZones y Lead Times por código postal. ¿Cuántos pedidos no encuentran pareja en la otra hoja? ¿Cuántos códigos postales de Lead Times no cubren pedidos reales?</div>
+          <div class="prompt">Cruza Seg Ped con Preliquidación por número de orden. Cuéntame cuántos pedidos quedan sin ningún registro de entrega, y cuántas órdenes de Preliquidación no existen en Seg Ped.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">20–35 min</span>
+        <span class="step-letter">c</span>
+        <div>
+          <div class="step-title">Reglas de negocio y cálculo del KPI</div>
+          <div class="step-body">Apliquen el diagrama de la sección 2: para cada pedido, clasifíquenlo en Entrega Efectiva / No Efectiva / Pendiente. Cuando un pedido tenga varios intentos de entrega en Preliquidación, decidan con criterio propio cuál intento cuenta — y anoten esa decisión, porque cambia el resultado.</div>
+          <div class="prompt">Con las reglas del diagrama, clasifica cada pedido y calcula el % de Entrega Efectiva sobre el total. Muéstrame también cuántos pedidos quedaron excluidos y por qué.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">35–43 min</span>
+        <span class="step-letter">d</span>
+        <div>
+          <div class="step-title">Desagregación por región y semana</div>
+          <div class="step-body">El KPI general esconde a los peores. Córtenlo por Región, por CD Final y por Repartidor: ¿hay zonas con Entrega Efectiva muy por debajo del promedio? ¿El promedio ponderado de las regiones cuadra con el KPI general? Esa consistencia — que el corte y el general nunca queden como cifras divorciadas — es un requisito, no un detalle.</div>
+          <div class="prompt">Calcula el % de Entrega Efectiva por Región y por CD Final. Ordénalo de peor a mejor y dime si el promedio ponderado por número de pedidos coincide con el KPI general.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">43–50 min</span>
+        <span class="step-letter">e</span>
+        <div>
+          <div class="step-title">Causas raíz</div>
+          <div class="step-body">Para las peores zonas: ¿es un problema de plazo (lead time muy corto o sin cobertura) o de ejecución (motivos de entrega fallida, reintentos, zonas alejadas)? Distingan un problema de planeación de uno operativo.</div>
+          <div class="prompt">De los pedidos No Efectivos, agrúpalos por motivo de entrega y por si su código postal tenía o no lead time disponible. ¿Qué causa concentra más casos?</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">50–55 min</span>
+        <span class="step-letter">f</span>
+        <div>
+          <div class="step-title">Recomendaciones</div>
+          <div class="step-body">Tres recomendaciones, máximo, priorizadas por impacto. Cada una debe apuntar a una causa raíz encontrada en el paso anterior — nada de recomendaciones genéricas tipo "mejorar la logística". Etiqueten cada una con la metodología de rediseño de procesos que vimos al inicio del curso — ¿es Eliminar, Simplificar, Optimizar, Automatizar o Medir? — así evitan saltar directo a "automaticemos esto" sin simplificar antes.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <span class="step-time">55–60 min</span>
+        <span class="step-letter">g</span>
+        <div>
+          <div class="step-title">Dashboard rápido</div>
+          <div class="step-body">Un vistazo del KPI, no una obra de arte: el número general, el corte por región, y la tabla de excepciones para que cualquiera pueda auditar el resultado. Usen el punto de partida de la sección 4.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Dashboard rápido con Streamlit</h2>
+    </div>
+    <p class="lede">No hace falta reinventar el layout: partan de este esqueleto, apúntenlo a su DataFrame ya clasificado (paso <em>c</em>) y complétenlo. Correrlo toma un comando.</p>
+
+    <div class="code-panel">
+      <div class="code-head"><span class="traffic"></span><span class="traffic"></span><span class="traffic"></span>&nbsp;dashboard_ee.py</div>
+      <pre><span class="tok-kw">import</span> streamlit <span class="tok-kw">as</span> st
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
+
+st.set_page_config(page_title=<span class="tok-str">"Entrega Efectiva"</span>, layout=<span class="tok-str">"wide"</span>)
+
+<span class="tok-com"># df_clasificado: el resultado del paso (c), con columna "Clasificacion"</span>
+<span class="tok-com"># en {"Entrega Efectiva", "Entrega No Efectiva", "Pendiente..."} y columnas</span>
+<span class="tok-com"># "Region" / "CD Final" / "Semana"</span>
+df = pd.read_csv(<span class="tok-str">"df_clasificado.csv"</span>)
+
+st.title(<span class="tok-str">"KPI de Entrega Efectiva — Campaña C07-26"</span>)
+
+resueltos = df[df[<span class="tok-str">"Clasificacion"</span>].isin(
+    [<span class="tok-str">"Entrega Efectiva"</span>, <span class="tok-str">"Entrega No Efectiva"</span>])]
+kpi = (resueltos[<span class="tok-str">"Clasificacion"</span>] == <span class="tok-str">"Entrega Efectiva"</span>).mean() * 100
+
+col1, col2, col3 = st.columns(3)
+col1.metric(<span class="tok-str">"Entrega Efectiva"</span>, f<span class="tok-str">"{kpi:.1f}%"</span>)
+col2.metric(<span class="tok-str">"Pedidos evaluados"</span>, len(resueltos))
+col3.metric(<span class="tok-str">"Pendientes"</span>, len(df) - len(resueltos))
+
+st.subheader(<span class="tok-str">"% Entrega Efectiva por Región"</span>)
+por_region = (resueltos.groupby(<span class="tok-str">"Region"</span>)[<span class="tok-str">"Clasificacion"</span>]
+    .apply(<span class="tok-kw">lambda</span> s: (s == <span class="tok-str">"Entrega Efectiva"</span>).mean() * 100)
+    .sort_values())
+st.bar_chart(por_region)
+
+st.subheader(<span class="tok-str">"Excepciones (No Efectiva)"</span>)
+st.dataframe(df[df[<span class="tok-str">"Clasificacion"</span>] == <span class="tok-str">"Entrega No Efectiva"</span>])</pre>
+    </div>
+    <p class="lede" style="margin-top:14px; font-size:0.9rem;">Para correrlo: <code style="font-family:'IBM Plex Mono',monospace; background:var(--accent-soft); padding:1px 6px; border-radius:4px;">streamlit run dashboard_ee.py</code></p>
+  </section>
+
+  <section id="reto-extra">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Si sobra tiempo: preguntas del negocio real</h2>
+    </div>
+    <p class="lede">Estas son preguntas que el equipo de operaciones realmente necesita responder — no ejercicios inventados. Si su grupo termina antes de la hora, ataquen una.</p>
+    <div class="sheet-grid">
+      <div class="sheet-card">
+        <span class="sheet-tag">Consistencia temporal</span>
+        <p class="sheet-desc">¿Cuántos pedidos de Lima se entregaron conformes el día 1, el día 2 y el día 3 después de su fecha de pedido, en la primera semana de la campaña?</p>
+      </div>
+      <div class="sheet-card">
+        <span class="sheet-tag">Backlog de fin de semana</span>
+        <p class="sheet-desc">De los pedidos hechos el viernes y el sábado de la semana 4, ¿cuántos siguen pendientes y cuántos se hicieron en total esos dos días?</p>
+      </div>
+      <div class="sheet-card">
+        <span class="sheet-tag">Alertas tipo semáforo</span>
+        <p class="sheet-desc">Construyan un semáforo con los pedidos a 1, 2 y 3 días de vencer su fecha máxima de entrega. ¿A cuáles avisarían primero al equipo de campo?</p>
+      </div>
+      <div class="sheet-card">
+        <span class="sheet-tag">Distancia entre zonas</span>
+        <p class="sheet-desc">Tomen dos códigos postales de IDZones y comparen su distancia (lat/long) a un punto de consolidación. ¿Explica esa distancia por qué uno entrega mejor que el otro?</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="entregable">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Al terminar la hora</h2>
+    </div>
+    <div class="deliverable">
+      <h3>Entregable de la sesión</h3>
+      <ul>
+        <li>% de Entrega Efectiva general, con los supuestos de clasificación documentados (qué hicieron con huérfanos, reintentos y pedidos sin lead time).</li>
+        <li>Tabla o corte por Región/CD Final que muestre dónde se concentra la entrega no efectiva.</li>
+        <li>Al menos una causa raíz identificada con evidencia de la data, no una intuición.</li>
+        <li>Dashboard corriendo localmente con el KPI, el corte por región y la tabla de excepciones.</li>
+        <li>Tres recomendaciones accionables, priorizadas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Nelson Cumpa · Nuevo Curso de IA</span>
+    <span>Semana 03 · Data: In Puts EE (CENTRUM) Final S1.xlsx</span>
+  </footer>
+
+</div>
+</body>
+</html>
