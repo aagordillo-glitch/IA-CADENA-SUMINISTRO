@@ -61,3 +61,18 @@ Se construyó `dashboard_ee.py`, un dashboard interactivo (no solo el esqueleto 
 - Para correrlo: `streamlit run dashboard_ee.py` (por defecto abre en http://localhost:8501).
 
 **Pendiente para la siguiente sesión:** recomendaciones priorizadas y etiquetadas ESOAM (paso f, aún no hecho).
+
+---
+
+## 2026-09-02 — Cross-filtering estilo Power BI en el dashboard
+
+A pedido del usuario, se agregó interactividad de "clic para filtrar" en `dashboard_ee.py`: al hacer clic en una barra de cualquiera de los 4 gráficos principales, todo el dashboard (tarjetas de KPI, los demás gráficos y la tabla de excepciones) se filtra por ese dato, igual que en Power BI. Se implementó con `st.plotly_chart(..., on_select="rerun", selection_mode="points", key=...)`, disponible desde Streamlit 1.35 (el entorno tiene 1.62 instalado).
+
+- Gráficos clicables y campo que filtran: % EE por Región → `Region`; % EE por CD Final → `CD Final`; Días de retraso → `Rango_Retraso`; N° de intentos promedio (Efectiva vs No Efectiva) → `Clasificacion`. La tarjeta "Concentración de No Efectiva por CD" no es clicable (solo informativa), pero sí refleja los filtros activos.
+- Los 4 filtros de clic se combinan entre sí y con los filtros de la barra lateral (Región/CD Final/rango de fechas) con lógica AND.
+- Cada gráfico se calcula excluyendo su propio filtro de clic (self-filter exclusion, como en Power BI): así el gráfico de Región sigue mostrando las 3 regiones aunque ya se haya hecho clic en una, permitiendo cambiar de selección sin quedar "atascado".
+- Se agregó un aviso ("🔎 Filtro por clic activo…") con el detalle de la selección activa, y un botón "✕ Quitar selección de clic" en la barra lateral para limpiar los 4 filtros a la vez (además del comportamiento nativo de Plotly: volver a hacer clic en la misma barra la deselecciona).
+- `requirements.txt` actualizado a `streamlit>=1.35` (versión mínima que soporta `on_select` en `st.plotly_chart`).
+- Verificado con `streamlit.testing.v1.AppTest` (sin necesidad del navegador, ya que la extensión de Chrome no estaba conectada en esta sesión): sin excepciones en la carga inicial (KPI 94.07%/91.96%, igual que `Resumen_KPI`) y, simulando un clic en la barra "SUR", las tarjetas recalculan correctamente a 90.10% / 7,817 pedidos evaluados — coincide exactamente con `EE_por_Region` del Excel.
+
+**Pendiente para la siguiente sesión:** probar el cross-filtering en el navegador real (la extensión de Chrome no estaba conectada esta sesión) y recomendaciones priorizadas y etiquetadas ESOAM (paso f, aún no hecho).
